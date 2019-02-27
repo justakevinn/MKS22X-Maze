@@ -1,20 +1,34 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
 
 public class Maze{
+  private char[][]maze;
+  private boolean animate;
 
-    public static void main(String args[]){
-      try{
-        File text = new File(args[0]);
-        Scanner inf = new Scanner(text);
-        while(inf.hasNextLine()){
-          String line = inf.nextLine();
-          System.out.println(line);//hopefully you can do other things with the line
-        }
+
+  public Maze(String filename){
+    try{
+      int c = -1;
+      String line = "";
+      File text = new File(filename);
+      Scanner inf = new Scanner(text);
+      while(inf.hasNextLine()){
+        line = inf.nextLine();
+        c ++;
+        System.out.println(line);//hopefully you can do other things with the line
       }
-      catch (FileNotFoundException e){
-        System.out.println("File Not Found");
-      }
+      System.out.println(c);
+      int r = line.length()
+      System.out.println(r);
     }
+    catch (FileNotFoundException e){
+      System.out.println("File Not Found");
+    }
+   }
+
+
+
+  public static void main(String args[]){
+    Maze test = new Maze(args[0]);
+  }
 }
