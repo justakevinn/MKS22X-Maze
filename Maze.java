@@ -1,6 +1,7 @@
 import java.util.*;
 import java.io.*;
 
+
 public class Maze{
   private char[][]maze;
   private boolean animate;
@@ -31,6 +32,10 @@ public class Maze{
     catch (FileNotFoundException e){
       System.out.println("File Not Found");
     }
+  }
+
+  public void setAnimate(boolean b){
+    animate = b;
   }
 
   public void fillMaze(String filename){
@@ -84,6 +89,8 @@ public class Maze{
 
 
   public boolean solve(int r, int c){
+    int temp1 = 0;
+    int temp2 = 0;
     if (maze[r][c] == 'E'){
       return true;
     }
@@ -96,8 +103,10 @@ public class Maze{
     }
     for (int i = 0; i < moves.length; i += 2){
         if (maze[r+moves[i]][c+moves[i+1]] == '@'){
+        temp1 = r+moves[i];
+        temp2 = c+moves[i+1];
         maze[r][c] = '.';
-        return solve(r+moves[i], c+moves[i+1]);
+      //  return solve(r+moves[i], c+moves[i+1]);
       }
     }
     return false;
