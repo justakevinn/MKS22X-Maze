@@ -95,11 +95,17 @@ public class Maze{
       }
     }
     System.out.println("r: "+ r + " c: "+ c);
-    return solve(r, c);
+    solve(r, c);
+    return count();
   }
 
 
   public int solve(int r, int c){
+    if(animate){
+            clearTerminal();
+            System.out.println(this);
+            wait(20);
+        }
     if (maze[r][c] == 'E'){
       return 1;
     }
@@ -110,21 +116,31 @@ public class Maze{
     for (int i = 0; i < moves.length; i +=2) {
       int x = solve(r+moves[i],c+moves[i+1]);
 			if (x > 0) {
+        //System.out.println(x);
 				return  x;
+
 			}
 		}
 		maze[r][c] = '.';
 		return -1;
 	}
 
-  public int countPath(){
-    return 0;
+  public int count(){
+    int returner = 0;
+    for (int i = 0; i < maze.length; i ++){
+      for (int j = 0; j < maze[0].length; j++){
+        if (maze[i][j] == '@') returner ++;
+      }
+    }
+    return returner;
   }
+
 
   public static void main(String args[]){
     Maze test = new Maze(args[0]);
+    test.setAnimate(true);
     System.out.println(test.toString());
     test.solve();
-    System.out.println(test.toString());
+    System.out.println(test.solve());
   }
 }
