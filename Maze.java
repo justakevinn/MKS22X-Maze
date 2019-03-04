@@ -10,16 +10,17 @@ public class Maze{
   private int[] moves;
 
 
-  public Maze(String filename) throws FileNotFoundException{
-      moves = new int[]{0, 1, 0, -1, 1, 0, -1, 0};
+  public Maze(String filename){
+    try{
       row = 0;
       String line = "";
       File text = new File(filename);
       Scanner inf = new Scanner(text);
+      moves = new int[] {1,0,0,1,-1,0,0,-1};
       while(inf.hasNextLine()){
         line = inf.nextLine();
         row ++;
-      //System.out.println(line);//hopefully you can do other things with the line
+        System.out.println(line);//hopefully you can do other things with the line
       }
       //  System.out.println(col);
       col = line.length();
@@ -27,9 +28,11 @@ public class Maze{
       maze = new char[row][col];
       fillMaze(filename);
 
-
+    }
+    catch (FileNotFoundException e){
       System.out.println("File Not Found");
     }
+  }
 
     private void wait(int millis){
            try {
@@ -38,11 +41,11 @@ public class Maze{
            catch (InterruptedException e) {
            }
        }
-       public void setAnimate(boolean b){
+    public void setAnimate(boolean b){
           animate = b;
       }
 
-      public void clearTerminal(){
+    public void clearTerminal(){
           //erase terminal, go to top left of screen.
           System.out.println("\033[2J\033[1;1H");
       }
@@ -92,32 +95,27 @@ public class Maze{
       }
     }
     System.out.println("r: "+ r + " c: "+ c);
-    solve(r, c);
-    return countPath();
+    return solve(r, c);
   }
 
 
-  public boolean solve(int r, int c){
-    int temp1 = 0;
-    int temp2 = 0;
+  public int solve(int r, int c){
     if (maze[r][c] == 'E'){
-      return true;
+      return 1;
     }
+    else if (maze[r][c] == '#' || maze[r][c] == '@' || maze[r][c] == '.') {
+			return 0;
+		}
     maze[r][c] = '@';
-    for (int i = 0; i < moves.length; i += 2){
-      if (maze[r+moves[i]][c+moves[i+1]] == ' '){
-        maze[r+moves[i]][c+moves[i+1]] = '@';
-        return solve(r+moves[i], c+moves[i+1]);
-      }
-        if (maze[r+moves[i]][c+moves[i+1]] == '@'){
-        temp1 = r+moves[i];
-        temp2 = c+moves[i+1];
-        maze[r][c] = '.';
-        return solve(r+moves[i], c+moves[i+1]);
-      }
-    }
-    return false;
-  }
+    for (int i = 0; i < moves.length; i +=2) {
+      int x = solve(r+moves[i],c+moves[i+1]);
+			if (x > 0) {
+				return  x;
+			}
+		}
+		maze[r][c] = '.';
+		return -1;
+	}
 
   public int countPath(){
     return 0;
