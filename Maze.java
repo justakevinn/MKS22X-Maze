@@ -10,8 +10,7 @@ public class Maze{
   private int[] moves;
 
 
-  public Maze(String filename){
-    try{
+  public Maze(String filename) throws FileNotFoundException{
       moves = new int[]{0, 1, 0, -1, 1, 0, -1, 0};
       row = 0;
       String line = "";
@@ -28,15 +27,25 @@ public class Maze{
       maze = new char[row][col];
       fillMaze(filename);
 
-    }
-    catch (FileNotFoundException e){
+
       System.out.println("File Not Found");
     }
-  }
 
-  public void setAnimate(boolean b){
-    animate = b;
-  }
+    private void wait(int millis){
+           try {
+               Thread.sleep(millis);
+           }
+           catch (InterruptedException e) {
+           }
+       }
+       public void setAnimate(boolean b){
+          animate = b;
+      }
+
+      public void clearTerminal(){
+          //erase terminal, go to top left of screen.
+          System.out.println("\033[2J\033[1;1H");
+      }
 
   public void fillMaze(String filename){
     try{
@@ -100,13 +109,11 @@ public class Maze{
         maze[r+moves[i]][c+moves[i+1]] = '@';
         return solve(r+moves[i], c+moves[i+1]);
       }
-    }
-    for (int i = 0; i < moves.length; i += 2){
         if (maze[r+moves[i]][c+moves[i+1]] == '@'){
         temp1 = r+moves[i];
         temp2 = c+moves[i+1];
         maze[r][c] = '.';
-      //  return solve(r+moves[i], c+moves[i+1]);
+        return solve(r+moves[i], c+moves[i+1]);
       }
     }
     return false;
